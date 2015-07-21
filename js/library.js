@@ -2,6 +2,7 @@
 
 var $ = MONAD();
 
+// DOM Manipulation 
 $.fn('html',function(value) {       
     return value.innerHTML;
 });
@@ -16,7 +17,7 @@ $.fn('hide',function(value) {
 });
 
 $.fn('addClass',function(value){
-    var args = [];
+    var args = [];    
     for(var i = 1, len = arguments.length ; i < len; i++ ) {            
         args.push(arguments[i]);
     }                       
@@ -25,10 +26,24 @@ $.fn('addClass',function(value){
 });
 
 $.fn('removeClass',function(value){
-    var args = [];
+    var args = [];    
     for(var i = 1, len = arguments.length ; i < len; i++ ) {            
         args.push(arguments[i]);
     }                       
-    value.classList.add.apply(value.classList,args);
+    value.classList.remove.apply(value.classList,args);
+    return value;
+});
+
+$.fn('hide',function(value){
+    value.style.display = 'none';
+    return value;
+});
+
+$.fn('show',function(value){
+    value.style.display = 'block';
+    return value;
+});
+
+$.fn('log',function(value){
     return value;
 });
