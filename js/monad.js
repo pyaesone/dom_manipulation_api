@@ -1,12 +1,9 @@
 function MONAD() {
-  var prototype = Object.create(null);
-  var ddd = true;
+  var prototype = Object.create(null);  
   function unit(value) {
     var monad = Object.create(prototype);
-    if(ddd) {
-        value = this.checkElement(value);
-        ddd = false;
-    }
+   
+    value = this.checkElement(value);
 
     monad.bind = function(func, args) { 
         var str = "", 
@@ -22,8 +19,8 @@ function MONAD() {
             }
         }
         
-        if(arr.length > 0) {
-            return arr;
+        if(arr.length > 0) {                                
+            return monad;
         }
         return str; 
     };
@@ -33,18 +30,21 @@ function MONAD() {
 
   this.checkElement = function(value) {
     var nodeType,ele;
-    
-    console.log(value);
 
-    if(value[0].nodeType) {        
-        return value;
+    if(value[0].nodeType) { 
+        nodeType = value[0].nodeType;
+        if(nodeType === 1 || nodeType === 9 || nodeType === 11) {                                            
+            return value;
+        } else {
+            throw new Error(value + ' is not a valid DOM element.');                
+        }
     }
 
     if(typeof value === 'string') {
         ele = document.querySelectorAll(value);        
         if(ele.length > 0) {            
             nodeType = ele[0].nodeType;
-            if(nodeType === 1 || nodeType === 9 || nodeType === 11) {                
+            if(nodeType === 1 || nodeType === 9 || nodeType === 11) {                                
                 return ele;
             }
         }
@@ -60,7 +60,7 @@ function MONAD() {
         for(var i = 0 ,len = arguments.length ; i < len ; i++ ) {
             args.push(arguments[i]);        
         }                
-        return unit(this.bind(func,args));
+        return this.bind(func,args);
     };
     return unit;
   }
