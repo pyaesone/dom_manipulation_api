@@ -59,7 +59,7 @@ $.fn('fadeOut',function(el){
 
     el.style.opacity = 1;
 
-    var duration = 1500;
+    var duration = 500;
 
     var cbFunc = arguments[1] || null;    
         
@@ -68,14 +68,16 @@ $.fn('fadeOut',function(el){
         el.style.opacity = +el.style.opacity - ($.config.slow / duration);
         if(+el.style.opacity > 0) {
             (window.requestAnimationFrame && requestAnimationFrame(tick) || setTimeout(tick,16));
+        } else if ( +el.style.opacity <= 0) {
+            if(typeof cbFunc === "function") {    
+                cbFunc.call(undefined,el); 
+            }
         }
     };
 
     tick();
 
-    if(typeof cbFunc === "function") {    
-        cbFunc.call(undefined,el); 
-    }
+    
 
     return el;
 });
@@ -86,10 +88,16 @@ $.fn('fadeIn',function(el){
 
     var duration = 500;
 
+    var cbFunc = arguments[1] || null;  
+    
     var tick = function () {
         el.style.opacity = +el.style.opacity + ($.config.default  / duration);        
         if(+el.style.opacity < 1) {
             (window.requestAnimationFrame && requestAnimationFrame(tick) || setTimeout(tick,16));
+        } else if ( +el.style.opacity >= 0) {
+            if(typeof cbFunc === "function") {    
+                cbFunc.call(undefined,el); 
+            }
         }
     };
 

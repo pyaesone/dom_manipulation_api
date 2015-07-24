@@ -1,5 +1,7 @@
 function MONAD() {
+    
   var prototype = Object.create(null);  
+
   function unit(value) {
     var monad = Object.create(prototype);
    
